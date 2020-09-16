@@ -4,14 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Java",
+            "label": "Build Java project",
             "type": "shell",
-            "command": "javac -classpath lib/awaz.jar -encoding utf-8 projetAwaz/MainAwaz.java",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "command": "javac -cp \"lib/*.jar\" -encoding \"utf-8\" src/MenuAwaz.java",
+            "group": "build"
+        },
+        {
+            "label": "Execute java project",
+            "type": "shell",
+            "command": "java -cp \"lib/awaz.jar;src/*.java\" src.Menu" ,
+            "group": "build"
         }
     ]
 }
