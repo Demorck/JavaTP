@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "d:\\Documents redirigés\\Documents\\Programmation\\Java\\resources\\geometrie.jar"
+    ]
+}
