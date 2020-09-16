@@ -1,5 +1,6 @@
 package glaces;
 import geometrie.Point ;
+import geometrie.Segment;
 
 /**
  * Un iceberg rectangulaire
@@ -18,7 +19,7 @@ public class Iceberg2D {
      */
     public Iceberg2D(Point g, Point d) {
         this.enBasAGauche = g;
-        this.enHautADroite = d;
+        this.enHautADroite = d; // TODO Tester si d > g
     }
 
     /**
@@ -55,22 +56,36 @@ public class Iceberg2D {
             }
         }
 
+
+        /**
+         * Le cas là est obligatoire pour ce type de configuration:
+         *      
+         *      ---------
+         *      |       |
+         *      |       |
+         *      ---------
+         * ----------------------
+         * |                    |
+         * |                    |
+         * |                    |
+         * ----------------------
+         */
         if (i1.coinEnHautADroite().getAbscisse() > i2.coinEnHautADroite().getAbscisse())
         {
-            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getAbscisse())
+            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
             {
                 p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
             }
             else
             {
-                p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
+                p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
             }
         }
         else
         {
-            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getAbscisse())
+            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
             {
-                p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
+                p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
             }
             else
             {
@@ -86,7 +101,7 @@ public class Iceberg2D {
      * @return le coin en bas à gauche
      */
     public Point coinEnBasAGauche() {
-        return this.enBasAGauche ;
+        return this.enBasAGauche;
     }
 
     /**
@@ -94,7 +109,7 @@ public class Iceberg2D {
      * @return le coin en haut à droite
      */
     public Point coinEnHautADroite() {
-        return this.enHautADroite ;
+        return this.enHautADroite;
     }
 
 
@@ -128,10 +143,14 @@ public class Iceberg2D {
      * @return vrai si collision entre les deux icebergs
      */
     public boolean collision(Iceberg2D i) {
-        if (this.enBasAGauche.getAbscisse() < i.enBasAGauche.getAbscisse() && this.enHautADroite.getAbscisse() > i.enBasAGauche.getAbscisse())
+        if (this.enHautADroite.getAbscisse() >= i.enBasAGauche.getAbscisse() && 
+            this.enBasAGauche.getAbscisse() <= i.enHautADroite.getAbscisse() &&
+            this.enHautADroite.getOrdonnee() >= i.enBasAGauche.getOrdonnee() &&
+            this.enBasAGauche.getOrdonnee() <= i.enHautADroite.getOrdonnee())
         {
-            
+            return true;
         }
+        return false;
     }
 
     /**
@@ -144,7 +163,7 @@ public class Iceberg2D {
     }
 
     public String toString() {
-        return null ;
+        return "En bas à gauche = " + this.enBasAGauche + " && en haut à droite: " + this.enHautADroite;
     }
 
     /**
@@ -152,7 +171,7 @@ public class Iceberg2D {
      * @return le point au centre de l'iceberg
      */
     public Point centre() {
-        return null ;
+        return new Segment(this.enBasAGauche, this.enHautADroite).milieu();
     }
 
     /**
@@ -160,7 +179,11 @@ public class Iceberg2D {
      * @param fr dans ]0..1[ facteur de réduction
      */
     public void fondre(double fr) {
-        // A compléter
+        fr = fr/2;
+        casserBas(fr);
+        casserHaut(fr);
+        casserGauche(fr);
+        casserDroite(fr);
     }
 
     /**
@@ -168,7 +191,7 @@ public class Iceberg2D {
      * @param fr dans ]0..1[ facteur de réduction
      */
     public void casserDroite(double fr) {
-        // A compléter
+        this.enHautADroite.deplacer(- fr * this.enHautADroite.getAbscisse(), 0);
     }
 
     /**
@@ -176,7 +199,7 @@ public class Iceberg2D {
      * @param fr dans ]0..1[ facteur de réduction
      */
     public void casserGauche(double fr) {
-        // A compléter
+        this.enBasAGauche.deplacer(- fr * this.enBasAGauche.getAbscisse(), 0);
     }
 
     /**
@@ -184,7 +207,7 @@ public class Iceberg2D {
      * @param fr dans ]0..1[ facteur de réduction
      */
     public void casserHaut(double fr) {
-        // A compléter
+        this.enHautADroite.deplacer(0, - fr * this.enHautADroite.getOrdonnee());
     }
 
     /**
@@ -192,7 +215,7 @@ public class Iceberg2D {
      * @param fr dans ]0..1[ : définit le pourcentage supprimé
      */
     public void casserBas(double fr) {
-        // A compléter
+        this.enBasAGauche.deplacer(0, - fr * this.enBasAGauche.getOrdonnee());
     }
 
 }
