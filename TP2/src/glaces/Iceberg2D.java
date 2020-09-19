@@ -16,10 +16,35 @@ public class Iceberg2D {
      * @param g le coin en bas à gauche
      * @param d le coin en haut à droite
      * uniquement en coordonnées positives
+     * 
+     * Si les points sont confondues, ont la même ordonnée ou abscisse, alors le point en haut à droite est déplacé de (1; 1).
      */
-    public Iceberg2D(Point g, Point d) {
-        this.enBasAGauche = g;
-        this.enHautADroite = d; // TODO Tester si d > g
+    public Iceberg2D(final Point g, final Point d) {
+        if(g.distance(d) == 0 || g.getOrdonnee() == d.getOrdonnee() || g.getAbscisse() == d.getAbscisse())
+        {
+            d.deplacer(1, 1);
+        }
+
+        if (d.getAbscisse() > g.getAbscisse() && d.getOrdonnee() > g.getOrdonnee())
+        {
+            this.enBasAGauche = g;
+            this.enHautADroite = d;
+        }
+        else if (d.getAbscisse() < g.getAbscisse() && d.getOrdonnee() < g.getOrdonnee())
+        {
+            this.enBasAGauche = d;
+            this.enHautADroite = g;
+        }
+        else if (d.getAbscisse() < g.getAbscisse() && d.getOrdonnee() > g.getOrdonnee())
+        {
+            this.enBasAGauche = new Point(d.getAbscisse(), g.getOrdonnee());
+            this.enHautADroite = new Point(g.getAbscisse(), d.getOrdonnee());
+        }
+        else
+        {
+            this.enBasAGauche = new Point(g.getAbscisse(), d.getOrdonnee());
+            this.enHautADroite = new Point(d.getAbscisse(), g.getOrdonnee());
+        }
     }
 
     /**
@@ -27,73 +52,77 @@ public class Iceberg2D {
      * @param i1 premier iceberg à fusionner
      * @param i2 deuxième iceberg à fusionner
      */
-    public Iceberg2D(Iceberg2D i1, Iceberg2D i2) {
+    public Iceberg2D(final Iceberg2D i1, final Iceberg2D i2) {
         if (!i1.collision(i2))
         {
-            // TODO Exceptions à mettre
-        }
-        Point p1, p2;
-        if (i1.coinEnBasAGauche().getOrdonnee() < i2.coinEnBasAGauche().getOrdonnee())
-        {
-            if (i1.coinEnBasAGauche().getAbscisse() < i2.coinEnBasAGauche().getAbscisse())
+            Point p1, p2;
+            if (i1.coinEnBasAGauche().getOrdonnee() < i2.coinEnBasAGauche().getOrdonnee())
             {
-                p1 = new Point(i1.coinEnBasAGauche().getAbscisse(), i1.coinEnBasAGauche().getOrdonnee());
+                if (i1.coinEnBasAGauche().getAbscisse() < i2.coinEnBasAGauche().getAbscisse())
+                {
+                    p1 = new Point(i1.coinEnBasAGauche().getAbscisse(), i1.coinEnBasAGauche().getOrdonnee());
+                }
+                else
+                {
+                    p1 = new Point(i2.coinEnBasAGauche().getAbscisse(), i1.coinEnBasAGauche().getOrdonnee());
+                }
             }
             else
             {
-                p1 = new Point(i2.coinEnBasAGauche().getAbscisse(), i1.coinEnBasAGauche().getOrdonnee());
+                if (i1.coinEnBasAGauche().getAbscisse() < i2.coinEnBasAGauche().getAbscisse())
+                {
+                    p1 = new Point(i1.coinEnBasAGauche().getAbscisse(), i2.coinEnBasAGauche().getOrdonnee());
+                }
+                else
+                {
+                    p1 = new Point(i2.coinEnBasAGauche().getAbscisse(), i2.coinEnBasAGauche().getOrdonnee());
+                }
             }
+
+
+            /**
+             * Le cas là est obligatoire pour ce type de configuration:
+             *      
+             *      ---------
+             *      |       |
+             *      |       |
+             *      ---------
+             * ----------------------
+             * |                    |
+             * |                    |
+             * |                    |
+             * ----------------------
+             */
+            if (i1.coinEnHautADroite().getAbscisse() > i2.coinEnHautADroite().getAbscisse())
+            {
+                if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
+                {
+                    p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
+                }
+                else
+                {
+                    p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
+                }
+            }
+            else
+            {
+                if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
+                {
+                    p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
+                }
+                else
+                {
+                    p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
+                }
+            }
+            this.enBasAGauche = p1;
+            this.enHautADroite = p2;
         }
         else
         {
-            if (i1.coinEnBasAGauche().getAbscisse() < i2.coinEnBasAGauche().getAbscisse())
-            {
-                p1 = new Point(i1.coinEnBasAGauche().getAbscisse(), i2.coinEnBasAGauche().getOrdonnee());
-            }
-            else
-            {
-                p1 = new Point(i2.coinEnBasAGauche().getAbscisse(), i2.coinEnBasAGauche().getOrdonnee());
-            }
+            this.enBasAGauche = i1.enBasAGauche;
+            this.enHautADroite = i1.enHautADroite;
         }
-
-
-        /**
-         * Le cas là est obligatoire pour ce type de configuration:
-         *      
-         *      ---------
-         *      |       |
-         *      |       |
-         *      ---------
-         * ----------------------
-         * |                    |
-         * |                    |
-         * |                    |
-         * ----------------------
-         */
-        if (i1.coinEnHautADroite().getAbscisse() > i2.coinEnHautADroite().getAbscisse())
-        {
-            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
-            {
-                p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
-            }
-            else
-            {
-                p2 = new Point(i1.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
-            }
-        }
-        else
-        {
-            if (i1.coinEnHautADroite().getOrdonnee() > i2.coinEnHautADroite().getOrdonnee())
-            {
-                p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i1.coinEnHautADroite().getOrdonnee());
-            }
-            else
-            {
-                p2 = new Point(i2.coinEnHautADroite().getAbscisse(), i2.coinEnHautADroite().getOrdonnee());
-            }
-        }
-        this.enBasAGauche = p1;
-        this.enHautADroite = p2;
     }
 
     /**
@@ -142,7 +171,7 @@ public class Iceberg2D {
      * @param i iceberg potentiellement en collision
      * @return vrai si collision entre les deux icebergs
      */
-    public boolean collision(Iceberg2D i) {
+    public boolean collision(final Iceberg2D i) {
         if (this.enHautADroite.getAbscisse() >= i.enBasAGauche.getAbscisse() && 
             this.enBasAGauche.getAbscisse() <= i.enHautADroite.getAbscisse() &&
             this.enHautADroite.getOrdonnee() >= i.enBasAGauche.getOrdonnee() &&
@@ -158,12 +187,12 @@ public class Iceberg2D {
      * @param i iceberg à comparer
      * @return vrai si this est plus volumineux que i
      */
-    public boolean estPlusGrosQue(Iceberg2D i) {
+    public boolean estPlusGrosQue(final Iceberg2D i) {
         return this.surface() > i.surface() ;
     }
 
     public String toString() {
-        return "En bas à gauche = " + this.enBasAGauche + " && en haut à droite: " + this.enHautADroite;
+        return "(" + this.enBasAGauche + ";" + this.enHautADroite + ")";
     }
 
     /**
@@ -178,44 +207,45 @@ public class Iceberg2D {
      * Réduction dans les quatre directions ; le centre ne bouge pas
      * @param fr dans ]0..1[ facteur de réduction
      */
-    public void fondre(double fr) {
-        fr = fr/2;
-        casserBas(fr);
-        casserHaut(fr);
-        casserGauche(fr);
-        casserDroite(fr);
+    public void fondre(final double fr) {
+        final double tmpLargeur  = this.largeur();
+        final double tmpHauteur = this.hauteur();
+        this.enHautADroite.deplacer(- fr * (tmpLargeur / 2), 0);
+        this.enBasAGauche.deplacer(fr * (tmpLargeur / 2), 0);
+        this.enHautADroite.deplacer(0, - fr * (tmpHauteur / 2));
+        this.enBasAGauche.deplacer(0, fr * (tmpHauteur / 2));
     }
 
     /**
      * Casser une partie à droite
      * @param fr dans ]0..1[ facteur de réduction
      */
-    public void casserDroite(double fr) {
-        this.enHautADroite.deplacer(- fr * this.enHautADroite.getAbscisse(), 0);
+    public void casserDroite(final double fr) {
+        this.enHautADroite.deplacer(- fr * (this.largeur() / 2), 0);
     }
 
     /**
      * Casser une partie à gauche
      * @param fr dans ]0..1[ facteur de réduction
      */
-    public void casserGauche(double fr) {
-        this.enBasAGauche.deplacer(- fr * this.enBasAGauche.getAbscisse(), 0);
+    public void casserGauche(final double fr) {
+        this.enBasAGauche.deplacer(fr * (this.largeur() / 2), 0);
     }
 
     /**
      * Casser une partie en haut
      * @param fr dans ]0..1[ facteur de réduction
      */
-    public void casserHaut(double fr) {
-        this.enHautADroite.deplacer(0, - fr * this.enHautADroite.getOrdonnee());
+    public void casserHaut(final double fr) {
+        this.enHautADroite.deplacer(0, - fr * (this.hauteur() / 2));
     }
 
     /**
      * Casser une partie en bas
      * @param fr dans ]0..1[ : définit le pourcentage supprimé
      */
-    public void casserBas(double fr) {
-        this.enBasAGauche.deplacer(0, - fr * this.enBasAGauche.getOrdonnee());
+    public void casserBas(final double fr) {
+        this.enBasAGauche.deplacer(0, fr * (this.hauteur() / 2));
     }
 
 }
