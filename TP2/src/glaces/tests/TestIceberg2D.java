@@ -120,8 +120,8 @@ public class TestIceberg2D
         Iceberg2D i1 = new Iceberg2D(new Point(0.,0.), new Point(10., 20.));
         Iceberg2D i2 = new Iceberg2D(new Point(10.,30.), new Point(10000., 20000.));
 
-        assert(i1.centre().equals(new Point(5, 10))): "";
-        assert(i2.centre().equals(new Point(5005, 10015))): "";
+        assert(i1.centre().equals(new Point(5, 10))): "Bug au niveau du centre i1";
+        assert(i2.centre().equals(new Point(5005, 10015))): "Bug au niveau du centre i2";
     }
 
     private static void testFondre()
