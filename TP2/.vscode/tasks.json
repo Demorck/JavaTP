@@ -6,7 +6,13 @@
         {
             "label": "Execute Java project",
             "type": "shell",
-            "command": "java -cp \"lib/geometrie.jar;src/App.java\" -encoding utf-8 src/App.java"
+            "command": "java -cp \"lib/geometrie.jar;src/glaces/tests/TestIceberg2D.java\" -encoding utf-8 src/glaces/tests/TestIceberg2D.java"
+        },
+        {
+            "label": "Build Java project",
+            "type": "shell",
+            "command": "javac -cp \"lib/*.jar\" -encoding \"utf-8\" \"src/glaces/tests/TestIceberg2D.java\" \"src/glaces/Iceberg2D.java\"",
+            "group": "build"
         }
     ]
 }
