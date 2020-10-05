@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - TestJeu",
+            "request": "launch",
+            "mainClass": "glaces.tests.TestJeu",
+            "projectName": "TP2_7c5f15c8"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TestArcticImage",
+            "request": "launch",
+            "mainClass": "glaces.tests.TestArcticImage",
+            "projectName": "TP2_7c5f15c8"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}",
