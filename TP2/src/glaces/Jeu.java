@@ -1,6 +1,7 @@
 package glaces;
 import geometrie.*;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Jeu
 {
@@ -10,19 +11,38 @@ public class Jeu
     private int nbDeplacement;
     private Boolean quit;
 
-    public Jeu()
+    /**
+     * Construit le jeu avec le type de jeu qu'on veut faire
+     * @param userInput type de jeu
+     */
+    public Jeu(int userInput)
     {
-        Iceberg2D i1 = new Iceberg2D(new Point(0.,0.), new Point(10., 20.));
-        Iceberg2D i2 = new Iceberg2D(new Point(20.,90.), new Point(25., 99.));
+        Iceberg2D i1 = new Iceberg2D(new Point(new Random().nextInt(300),new Random().nextInt(300)), new Point(new Random().nextInt(300),new Random().nextInt(300)));
+        Iceberg2D i2 = new Iceberg2D(new Point(new Random().nextInt(300),new Random().nextInt(300)), new Point(new Random().nextInt(300),new Random().nextInt(300)));
 
-        this.ocean = new Ocean(300, 300, 5);
+        
+        switch(userInput)
+        {
+            case 1:
+                this.ocean = new Ocean(300, 300, i1, i2, 10);
+                break;
+            case 2:
+                this.ocean = new Ocean(300, 300, 5);
+                break;
+            default:
+                this.ocean = new Ocean();
+                break;
+        }
+        
         this.userScan = new Scanner(System.in);
         this.nbDeplacement = 0;
         this.ocean.render(this.nbDeplacement);
         this.quit = false;
-        
     }
     
+    /**
+     * "Boucle" principal du jeu
+     */
     public void play()
     {
         printThings("menu");
@@ -63,14 +83,36 @@ public class Jeu
         }
         
         this.movePoisson();
+        // Ajoute 5 poissons tous les 10 déplacements
+        if (this.nbDeplacement % 10 == 0)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                this.ocean.addRandomFish();
+            }
+        }
+        // Ajoute 2 icebergs tous les 20 déplacements
+        if (this.nbDeplacement % 20 == 0)
+        {
+            this.ocean.addRandomIceberg();
+            this.ocean.addRandomIceberg();
+        }
         this.ocean.detectCollisions();
         if (this.ocean.isFishEaten())
             this.resetNbDeplacement();
+        if (this.nbDeplacement > 30)
+            this.ocean.getPingouin().setHeight(this.ocean.getPingouin().getHeight() - 5);
         this.ocean.resetFishEaten();
+        this.isLose();
         this.ocean.fondre(0.05);
         this.ocean.render(this.nbDeplacement);
+        this.printThings("nbFishEaten");
     }
 
+    /**
+     * Déplace le pingouin en fonction de zqsd
+     * @param userInput entrée utilisateur
+     */
     public void movePingouin(String userInput)
     {
         switch(userInput)
@@ -94,6 +136,9 @@ public class Jeu
         }
     }
 
+    /**
+     * Déplace les poissons
+     */
     public void movePoisson()
     {
         for (Poisson poisson : this.ocean.getPoisson())
@@ -102,6 +147,10 @@ public class Jeu
         }
     }
 
+    /**
+     * Désolé pour le nom de la fonction mais c'est le fonction qui permet d'afficher les trucs
+     * @param string En fonction de ce que je veux, ça print quelque chose
+     */
     private void printThings(String string)
     {
         switch(string)
@@ -117,26 +166,54 @@ public class Jeu
             case "pingouinLimite":
                 System.out.println("Le pingouin ne peut pas sortir de l'océan");
                 break;
+            case "nbFishEaten":
+                System.out.println("Vous avez mangé " + this.ocean.getNbFishEaten() + (this.ocean.getNbFishEaten() > 1 ? " poissons" : " poisson"));
             default:
                 break;
         }
     }
 
+    /**
+     * Demande à l'utilisateur d'entrer quelque chose
+     * @return ce que tape l'utlisateur
+     */
     private String askUserInput()
     {
         return this.userScan.nextLine();
     }
 
+    /**
+     * Ajoute 1 au nombre de déplacement
+     */
     public void addNbDeplacement()
     {
         ++this.nbDeplacement;
     }
 
+    /**
+     * Reset le nombre de déplacement
+     */
     public void resetNbDeplacement()
     {
         this.nbDeplacement = 0;
     }
 
+    /**
+     * Test si le pingouin meurt
+     */
+    public void isLose()
+    {
+        if (this.ocean.getPingouin().getHeight() < 5)
+        {
+            this.quit = true;
+            System.out.println("Le pingouin n'existe plus :(");
+        }
+    }
+
+    /**
+     * Si la personne veut quitter, ferme la fenêtre. Dans les deux cas, retourne si l'utilisateur veut quitter
+     * @return boolean s'il veut quitter
+     */
     public Boolean wantToQuit()
     {
         if (this.quit)

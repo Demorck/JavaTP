@@ -1,10 +1,7 @@
 package glaces;
 
-import javax.swing.Icon;
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
-import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
