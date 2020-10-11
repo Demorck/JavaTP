@@ -2,25 +2,25 @@ package cartes;
 
 public enum Couleur
 {
-    BLUE("Bleu"),
-    RED("Rouge"),
-    YELLOW("Jaune"),
-    GREEN("Vert");
+    BLUE("Bleu", "#0000ff"),
+    RED("Rouge", "#ff0000"),
+    YELLOW("Jaune", "#00ffff"),
+    GREEN("Vert", "#00ff00");
 
-    String fr;
-    private Couleur(String fr)
+    String fr, color;
+    private Couleur(String fr, String color)
     {
         this.fr = fr;
+        this.color = color;
     }
 
-    public String getNom()
+    public String getColor()
+    {
+        return this.color;
+    }
+
+    public String getFr()
     {
         return this.fr;
     }
-
-    public String toString()
-    {
-        return "Couleur={nom=\""+this.fr+"\"}";
-    }
-
 }

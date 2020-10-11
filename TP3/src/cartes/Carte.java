@@ -12,7 +12,7 @@ public class Carte
     }
 
     public int getValeur() {
-        return this.valeur;
+        return valeur;
     }
 
     public void setValeur(int valeur) {
@@ -20,7 +20,7 @@ public class Carte
     }
 
     public Couleur getCouleur() {
-        return this.couleur;
+        return couleur;
     }
 
     public void setCouleur(Couleur couleur) {
@@ -29,8 +29,8 @@ public class Carte
 
     public String toString() {
         return "Carte{" +
-                "valeur=" + this.valeur +
-                ", couleur=" + this.couleur +
+                "valeur=" + valeur +
+                ", couleur=" + couleur +
                 '}';
     }
 }
