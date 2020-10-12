@@ -5,7 +5,7 @@ import java.util.Random;
 public final class FabriqueCartes
 {
     private static final FabriqueCartes instance = new FabriqueCartes();
-    private static PaquetDeCartes deck;
+    private PaquetDeCartes deck;
 
     private FabriqueCartes(){}
 
@@ -14,7 +14,7 @@ public final class FabriqueCartes
         return instance;
     }
 
-    public static PaquetDeCartes getPaquet32()
+    public PaquetDeCartes getPaquet32()
     {
         deck = new PaquetDeCartes();
         Random r = new Random();
@@ -25,14 +25,14 @@ public final class FabriqueCartes
         return deck;
     }
 
-    public static PaquetDeCartes get1Vert()
+    public PaquetDeCartes get1Vert()
     {
         deck = new PaquetDeCartes();
-        deck.ajouter(new Carte(1, Couleur.GREEN));
+        deck.ajouter(new Carte(1, Couleur.VERT));
         return deck;
     }
 
-    public static PaquetDeCartes getPaquetVide()
+    public PaquetDeCartes getPaquetVide()
     {
         return new PaquetDeCartes();
     }

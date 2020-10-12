@@ -1,7 +1,6 @@
 package cartes.tests;
 
 import cartes.FabriqueCartes;
-import cartes.PaquetDeCartes;
 
 public class TestPaquetDeCartes
 {
@@ -12,8 +11,8 @@ public class TestPaquetDeCartes
 
     private static void getNombreDeCartes()
     {
-        assert FabriqueCartes.get1Vert().getNombreDeCartes() == 1 : "Bug singleton get1Vert";
-        assert FabriqueCartes.getPaquet32().getNombreDeCartes() == 32 : "Bug singleton getPaquet32";
-        assert FabriqueCartes.getPaquetVide().getNombreDeCartes() == 0 : "Bug singleton getPaquetVide";
+        assert FabriqueCartes.getInstance().get1Vert().getNombreDeCartes() == 1 : "Bug singleton get1Vert";
+        assert FabriqueCartes.getInstance().getPaquet32().getNombreDeCartes() == 32 : "Bug singleton getPaquet32";
+        assert FabriqueCartes.getInstance().getPaquetVide().getNombreDeCartes() == 0 : "Bug singleton getPaquetVide";
     }
 }

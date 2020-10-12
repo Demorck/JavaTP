@@ -2,10 +2,10 @@ package cartes;
 
 public enum Couleur
 {
-    BLUE("Bleu"),
-    RED("Rouge"),
-    YELLOW("Jaune"),
-    GREEN("Vert");
+    BLEU("Bleu"),
+    ROUGE("Rouge"),
+    JAUNE("Jaune"),
+    VERT("Vert");
 
     String fr;
     private Couleur(String fr)
