@@ -33,6 +33,19 @@ public class PaquetDeCartes
         this.deck.addAll(pdc.getDeck());
     }
 
+    public boolean isEqual(PaquetDeCartes pdc)
+    {
+        if (this.deck.size() == pdc.getDeck().size())
+        {
+            for (int i = 0; i < this.deck.size(); i++)
+                if (this.deck.get(i).getCouleur() != pdc.getDeck().get(i).getCouleur() || this.deck.get(i).getValeur() != pdc.getDeck().get(i).getValeur())
+                    return false;
+        }
+        else
+            return false;
+        return true;
+    }
+
     public ArrayList<Carte> getDeck()
     {
         return this.deck;
