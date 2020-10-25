@@ -9,6 +9,13 @@
             "name": "CodeLens (Launch) - TestJeu",
             "request": "launch",
             "mainClass": "glaces.tests.TestJeu",
+            "projectName": "TP2_333d80ec"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TestJeu",
+            "request": "launch",
+            "mainClass": "glaces.tests.TestJeu",
             "projectName": "TP2_7c5f15c8"
         },
         {
