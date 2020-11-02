@@ -140,7 +140,13 @@ public class Adresse
      * @param masque masque à appliquer
      * @exception AssertionError si le masque et le receveur ne sont pas de la même taille
      */
-    public void masquer(Adresse masque) {
+    public void masquer(Adresse masque)
+    {
+        assert masque.size() == this.size() : new AssertionError("Error in masquer(Adresse masque) in Adresse.java, masque.size() =! this.size()");
+        for (int i = 0; i < adresse.length; i++)
+        {
+            this.adresse[i].masquer(masque.getOctet(i));    
+        }
     }
 
     /**
@@ -159,7 +165,14 @@ public class Adresse
      * @param alo octets
      * @exception AssertionError si alo est null
      */
-    public void setOctets(Octet... alo)  {
+    public void setOctets(Octet... alo) 
+    {
+        if(alo == null)
+            throw new AssertionError("Error in setOctets(Octet... alo)) in Adresse.java, alo is null");
+        for (int i = 0; i < alo.length; i++)
+        {
+            this.adresse[i] = alo[i];
+        }
     }
 
     /**
@@ -168,7 +181,11 @@ public class Adresse
      * @param k rang de l'octet
      * @exception AssertionError si k n'est pas entre 0 et le nombre d'octets
      */
-    public void setOctet(Octet o, int k)  {
+    public void setOctet(Octet o, int k) 
+    {
+        if (k < 0 || k > this.getNbreOctets())
+            throw new AssertionError("Error in setOctet(Octet o, int k) in Adresse.java, k < 0 || k > this.getNbreOctets()");
+        this.adresse[k] = o;
     }
 
     /**
@@ -177,8 +194,11 @@ public class Adresse
      * @return l'octet de rang k de l'adresse
      * @exception AssertionError si k n'est pas entre 0 et le nombre d'octets
      */
-    public Octet getOctet(int k) {
-        return null ;
+    public Octet getOctet(int k)
+    {
+        if (k < 0 || k > this.getNbreOctets())
+            throw new AssertionError("Error in getOctet(int k) in Adresse.java, k < 0 || k > this.getNbreOctets()");
+        return this.adresse[k];
     }
 
     /**
@@ -186,11 +206,26 @@ public class Adresse
      * Par exemple 192.45.43.100
      * @return la chaîne de caractères construite
      */
-    public String toString() {
+    public String toString()
+    {
         String res = "";
         for (Octet octet : this.adresse)
             res+=(char)octet.getValue();
         return res;
+    }
+
+    public boolean isEqual(Adresse a)
+    {
+        if (a.size() != this.size())
+        {
+            return false;
+        }
+        for (int i = 0; i < a.getNbreOctets(); i++)
+        {
+            if(a.getOctet(i).getValue() != this.adresse[i].getValue())
+                return false;
+        }
+        return true;
     }
 
 }

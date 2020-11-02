@@ -1,5 +1,4 @@
 package calc.tests;
-import calc.*;
 
 public class TestBinaire
 {
@@ -18,11 +17,6 @@ public class TestBinaire
 
         TestQuotient.testValeur();
         TestQuotient.testOperateur();
-
-    }
-
-    private static void testToString()
-    {
 
     }
 }

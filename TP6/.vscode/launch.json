@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - TestAdresse",
+            "request": "launch",
+            "mainClass": "reseau.tests.TestAdresse",
+            "projectName": "TP6_333d80f0"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}",
