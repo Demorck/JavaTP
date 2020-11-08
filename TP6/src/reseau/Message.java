@@ -55,8 +55,11 @@ public class Message
         this.message = new ArrayList<Octet>();
         for (int s : v)
         {
-            if (s > 255)
-                this.ajouter(s-255);
+            if (s > 128)
+            {
+                this.ajouter(s/256);
+                s %= 128;
+            }
             else
                 this.ajouter(new Octet());
             this.ajouter(s);
@@ -73,7 +76,7 @@ public class Message
         for (int i = 0; i < mot.length(); i++)
         {
             char c = mot.charAt(i);
-            if (c <= 'ÿ')
+            if (Integer.parseInt(Character.toString(c)) <= 127)
             {
                 short s = Short.parseShort(Character.toString(c));
                 this.ajouter(s);
